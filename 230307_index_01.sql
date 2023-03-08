@@ -134,3 +134,78 @@ SELECT * FROM customer WHERE phone IS NULL AND birth IS NULL;
 
 -- 고객 테이블에서 연락처가 존재하는 고객 조회
 SELECT * FROM customer WHERE phone IS NOT NULL;
+
+
+-- < 집계 함수 >
+-- SUM, AVG, MIN, MAX, COUNT
+SELECT * FROM orders;
+
+-- 주문 테이블에서 총 판매 개수 검색 + 의미 있는 열 이름으로 변경
+SELECT SUM(amount) AS total_amount FROM orders; -- 49
+SELECT SUM(amount) AS 'total_amount' FROM orders; -- 49
+SELECT SUM(amount) '총 판매개수' FROM orders; -- 49
+SELECT SUM(amount) 총판매개수 FROM orders; -- 49
+
+-- 주문 테이블에서 총 주문 내역 건수 조회
+-- COUNT(*) : 모든 행의 개수를 카운트
+SELECT COUNT(*) FROM orders;
+SELECT COUNT(orderid) FROM orders;
+
+SELECT COUNT(*) FROM customer; -- 11
+SELECT COUNT(phone) FROM customer; -- 10
+SELECT COUNT(birth) FROM customer; -- 9
+
+-- 주문 테이블에서 총 판매 개수, 평균 판매 개수, 상품 최저가, 상품 최고가 검색
+-- 총 판매 개수 : SUM()
+-- 평균 판매 개수 : AVG()
+-- 상품 최저가 : MIN()
+-- 상품 최고가 : MAX()
+
+SELECT SUM(amount) '총 판매 개수',
+		AVG(amount) '평균 판매 개수',
+        MIN(price) '상품 최저가',
+        MAX(price) '상품 최고가'
+FROM orders;
+        
+-- 고객별로 주문한 주문 내역 건수 구하기
+SELECT custid, count(*) FROM orders GROUP BY custid;
+
+-- 고객별로 주문한 상품 총 수량 구하기
+SELECT custid, SUM(amount) FROM orders GROUP BY custid;
+
+-- 고객별로 주문한 총 주문액 구하기
+-- 사칙연산 : +, -, *, /
+SELECT custid, SUM(price * amount) FROM orders GROUP BY custid;
+
+-- 상품별로 판매 개수 구하기
+SELECT prodname, SUM(amount) AS '판매 개수' FROM orders GROUP BY prodname ORDER BY '판매 개수' DESC;		-- ORDER BY 작동안함
+SELECT prodname, SUM(amount) AS 판매개수 FROM orders GROUP BY prodname ORDER BY 판매개수 DESC;			-- ORDER BY 작동함	
+SELECT prodname, SUM(amount) AS 'total' FROM orders GROUP BY prodname ORDER BY 'total' DESC;		-- ORDER BY 작동안함	
+SELECT prodname, SUM(amount) AS '판매 개수' FROM orders GROUP BY prodname ORDER BY SUM(amount) DESC;	-- ORDER BY 작동함
+SELECT prodname, SUM(amount) AS 판매개수 FROM orders GROUP BY prodname ORDER BY SUM(amount) DESC;		-- ORDER BY 작동함
+
+-- 추가) 짝수 해에 태어난 고객 조회
+SELECT * FROM customer WHERE YEAR(birth) % 2 = 0;
+
+-- 추가) 2000-02-22 다음날에 태어난 고객 조회
+-- DATE('2000-02-22'): '2000-02-22' 문자 데이터를 날짜 데이터로 변환
+SELECT * FROM customer WHERE birth = DATE('2000-02-22') + 1;
+
+-- 추가) 홀수 일에 태어난 고객 조회
+SELECT * FROM customer WHERE MOD(DAY(birth), 2) = 1;
+
+-- < HAVING >
+-- group by 명령 이후 추가 조건
+
+-- 총 주문액이 10000원 이상인 고객에 대해 고객별로 주문한 상품 총 수량 구하기
+-- = 고객별로 // 주문한 상품 총 수량 구하기
+
+
+-- HAVING 절은 GROUP BY 절과 반드시 함게 사용 해야함
+-- HAVNIG 절은 WHERE 절보다 뒤에 나와야 함.
+
+-- 총 주문액이 10000원 이상인 고객에 대해 고객별로 주문한 상품 총 수량 구하기 (단, custid가 'bunny' 인 경우 제외)
+SELECT custid, SUM(amount), SUM(price * amount) AS '확인용'
+	FROM orders
+    WHERE custid <> 'bunny'
+	GROUP BY custid HAVING SUM(price * amount) >= 10000;

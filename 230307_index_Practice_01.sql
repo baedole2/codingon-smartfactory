@@ -40,8 +40,15 @@ SELECT * FROM user WHERE birthday LIKE '____-06-__' ORDER BY birthday;
 SELECT * FROM user WHERE gender = 'M' AND birthday LIKE '197_%';
 
 -- A-5.
-SELECT * FROM user WHERE gender = 'M' AND birthday LIKE '197_%';
-
+SELECT * FROM user 
+	WHERE gender = 'M' AND birthday LIKE '197%';
+SELECT * FROM user 
+	WHERE gender = 'M' AND 
+		birthday <= '1979-12-31' AND 
+		birthday >= '1970-01-01';
+SELECT * FROM user 
+	WHERE gender = 'M' AND 
+		birthday BETWEEN '1970-01-01' AND '1979-12-31';
 
 
 -- 6. 모든 회원목록 중 age를 기준으로 내림차순 정렬하여 가져오는데, 그때 처음 3개의 레코드만 가져오시오.
@@ -49,13 +56,17 @@ SELECT * FROM user ORDER BY age DESC LIMIT 0,3;
 
 -- A-6.
 SELECT * FROM user ORDER BY age DESC LIMIT 0,3;
-
+SELECT * FROM user ORDER BY age DESC LIMIT 3;
+SELECT * FROM user ORDER BY age DESC LIMIT 0, 3;
+SELECT * FROM user ORDER BY age DESC LIMIT 3 OFFSET 0;
 
 
 -- 7. 모든 회원 목록 중 나이가 25이상 50이하인 회원의 목록을 출력하시오.
 SELECT * FROM user WHERE age BETWEEN 25 AND 50;
 
 -- A-7.
-SELECT * FROM user WHERE age BETWEEN 25 AND 50;
+SELECT * FROM user WHERE age BETWEEN 25 AND 50; 
+SELECT * FROM user WHERE age >= 25 AND age <= 50;
+SELECT * FROM user WHERE age > 24 AND age < 51; 
 
 
