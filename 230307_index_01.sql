@@ -123,3 +123,14 @@ SELECT * FROM customer WHERE birth >= '2000-01-01' LIMIT 2;
 -- 2000년 이후 출생 고객 중에서 뒤에 2건만 조회하고 싶은 경우
 SELECT * FROM customer WHERE birth >= '2000-01-01' ORDER BY custid DESC LIMIT 2;
 SELECT * FROM customer LIMIT 1, 2;
+
+-- 이하 2023-03-08 수업 내용
+
+-- < IS NULL >
+-- 고객 테이블에서 연락처가 존재하지 않는 고객 조회
+SELECT * FROM customer WHERE phone IS NULL;
+SELECT * FROM customer WHERE birth IS NULL;
+SELECT * FROM customer WHERE phone IS NULL AND birth IS NULL;
+
+-- 고객 테이블에서 연락처가 존재하는 고객 조회
+SELECT * FROM customer WHERE phone IS NOT NULL;
