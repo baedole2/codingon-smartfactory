@@ -42,6 +42,5 @@ DELETE FROM new_customer WHERE custid = 'happy';
 DELETE FROM new_customer WHERE custid = 'kiwi';
 
 SELECT * FROM new_orders;
-SELECT * FROM new_customer;
-   
+SELECT * FROM new_customer;   
     
