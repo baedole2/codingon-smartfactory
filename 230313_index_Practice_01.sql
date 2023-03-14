@@ -14,7 +14,7 @@ CREATE TABLE books (
     title VARCHAR(100),
     author_id INT,
     publication_date DATE,
-    FOREIGN KEY(author_id) REFERENCES authors(author_id)
+    FOREIGN KEY(author_id) REFERENCES authors(author_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE orders (
@@ -22,7 +22,7 @@ CREATE TABLE orders (
     book_id INT,
     customer_name VARCHAR(50),
     order_date DATE,
-    FOREIGN KEY(book_id) REFERENCES books(book_id)
+    FOREIGN KEY(book_id) REFERENCES books(book_id)  ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 INSERT INTO authors VALUES

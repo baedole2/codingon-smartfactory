@@ -48,3 +48,32 @@ UPDATE authors SET last_name = 'Martinez' WHERE author_id = 2;
 -- 10. author_id 3인 저자가 쓴 모든 책을 삭제하는 SQL 문을 작성합니다.
 DELETE FROM books WHERE author_id = 3;
 -- 단 현재 authors 테이블의 author_id를 참조하고 있어서 바로 삭제는 안됨.
+
+-- < 추가 실습 >
+-- 11. Stephen King이 쓴 모든 책의 제목과 발행일을 표시합니다.
+SELECT title, publication_date FROM books
+	WHERE author_id = (SELECT author_id FROM authors WHERE first_name = 'Stephen' AND last_name = 'King'); 
+
+-- 12. 책을 쓴 저자의 이름을 표시합니다.
+SELECT first_name, last_name, title AS '확인용'
+	FROM authors INNER JOIN books
+	ON authors.author_id = books.author_id;
+
+-- 13. 각 저자가 쓴 책의 수를 표시합니다.
+SELECT first_name, last_name, COUNT(*) AS '출간 갯수'
+	FROM authors INNER JOIN books
+	ON authors.author_id = books.author_id
+    GROUP BY authors.author_id;
+    
+SELECT count(*) AS '출간 갯수'
+	FROM books
+	WHERE author_id = Any(SELECT author_id FROM authors);
+	GROUP BY 
+
+-- 14. 2022년 2월 16일 이후에 발생한 모든 주문에 대한 책 제목과 고객 이름을 표시합니다.
+SELECT title, customer_name, order_date
+	FROM orders,books WHERE order_date > '2022-02-16' AND
+		books.book_id = orders.book_id;
+
+
+
