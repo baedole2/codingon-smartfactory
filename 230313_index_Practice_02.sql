@@ -64,11 +64,6 @@ SELECT first_name, last_name, COUNT(*) AS '출간 갯수'
 	FROM authors INNER JOIN books
 	ON authors.author_id = books.author_id
     GROUP BY authors.author_id;
-    
-SELECT count(*) AS '출간 갯수'
-	FROM books
-	WHERE author_id = Any(SELECT author_id FROM authors);
-	GROUP BY 
 
 -- 14. 2022년 2월 16일 이후에 발생한 모든 주문에 대한 책 제목과 고객 이름을 표시합니다.
 SELECT title, customer_name, order_date
@@ -76,4 +71,45 @@ SELECT title, customer_name, order_date
 		books.book_id = orders.book_id;
 
 
+-- < LEFT OUTER JOIN, LEFT JOIN >
+-- : 첫번째 테이블을 기준으로 두번째 테이블을 조합하는 JOIN
+-- 테이블 A LEFT JOIN 테이블B ON 조인조건
+-- LEFT(왼쪽) 테이블의 것은 모두 출력이 됨!!
+-- 조인 순서가 중요하다
+-- ON 조건을 불만족시; 테이블 A 속성값은 그대로 가져오고 , 테이블 B 속성값은 NULL!
 
+SELECT * FROM authors;
+SELECT * FROM books;
+SELECT * FROM orders;
+
+INSERT INTO books VALUES (5,'Lucky Day',NULL,'2023-03-01');
+
+-- INNER JOIN (books,authors)
+SELECT * FROM books INNER JOIN authors
+	ON books.author_id = authors.author_id;
+-- books 테이블에 author_id가 NULL이었던 행은 제외하고 출력
+
+SELECT * FROM books LEFT JOIN authors
+	ON books.author_id = authors.author_id;
+-- books 테이블에 author_id가 NULL인 행이 있더라도 출력
+
+SELECT * FROM authors LEFT JOIN books
+	ON books.author_id = authors.author_id;
+-- books 테이블에 author_id가 NULL인 행이 있더라도 출력
+
+
+
+
+SELECT * FROM books INNER JOIN orders
+	ON books.book_id = orders.book_id;
+
+SELECT * FROM books LEFT JOIN orders
+	ON books.book_id = orders.book_id;
+
+SELECT * FROM books RIGHT JOIN orders
+	ON books.book_id = orders.book_id;
+
+SELECT * FROM books left JOIN orders
+	ON books.book_id = orders.book_id
+     left JOIN authors
+	ON books.author_id = authors.author_id
