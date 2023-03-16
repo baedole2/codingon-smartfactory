@@ -99,6 +99,10 @@ SELECT first_name, last_name FROM employees WHERE salary >= 80000;
 -- 4. 영업부에서 근무하며 $50,000 이상의 급여를 받는 모든 직원의 이름과 급여를 반환하는 쿼리를 작성합니다.
 SELECT first_name, last_name, salary FROM employees WHERE salary >= 50000 AND department_id = 2;
 
+SELECT first_name, last_name, salary 
+	FROM employees AS E JOIN departments AS d
+	ON d.department_id = e.department_id 
+	WHERE d.department_name = 'Sales' AND salary >= 50000;
 
 -- 5. 직함과 직함별 평균 급여를 반환하는 조회를 작성합니다. --> ?????
 SELECT job_id, AVG(salary) FROM employees GROUP BY job_id;
@@ -112,6 +116,9 @@ SELECT job_title, max_salary FROM jobs;
 
 SELECT job_title, max_salary FROM jobs
 	WHERE max_salary = (SELECT MAX(max_salary) FROM jobs);
+    
+SELECT job_title, MAX(max_salary) FROM jobs GROUP BY job_title;
+SELECT job_id, MAX(max_salary) FROM jobs GROUP BY job_id;
 
 
 -- 7. 가장 높은 연봉을 받는 직원 상위 10명의 이름과 급여를 반환하는 쿼리를 작성합니다.
@@ -147,3 +154,21 @@ SELECT first_name, last_name, salary FROM employees WHERE commission_pct is NULL
 
 
 
+-- 셀프 조인
+CREATE TABLE users (
+	id INT PRIMARY KEY, -- 유저번호
+    name VARCHAR(10), -- 유저명
+    superior_id INT -- 상사
+);
+
+INSERT INTO users VALUES 
+	(1, 'happy', NULL), 
+    (2, 'banana', 1), 
+    (3, 'lucky', 2),
+    (4, 'orange', 2), 
+    (5, 'apple', NULL);
+
+SELECT * FROM users;
+
+SELECT u1.id, u1.name AS'멘티명' , u2.name AS '멘토명' FROM users AS u1 JOIN users AS u2
+	ON u1.superior_id = u2.id;
