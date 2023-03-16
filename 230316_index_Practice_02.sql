@@ -6,3 +6,7 @@ CREATE USER 'user'@'localhost' IDENTIFIED BY '1234';
 GRANT ALL PRIVILEGES ON *.* TO 'user'@'localhost' WITH GRANT OPTION;
 -- 현재 유저 목록 조회
 SELECT user FROM mysql.user;
+
+USE cpp_db;
+SHOW TABLES;
+SELECT * FROM inventory;
